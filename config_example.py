@@ -1,0 +1,2 @@
+# Discord login Token
+token = ""
