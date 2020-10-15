@@ -6,18 +6,18 @@ import config
 
 def is_tech():
     def predicate(ctx):
-        if ctx.author.id not in config.botadminids:
-            raise commands.MissingPermissions(missing_perms="Tech")
-        else:
+        if ctx.author.id in config.botadminids:
             return True
+        else:
+            raise commands.MissingPermissions(missing_perms="Tech")
 
     return commands.check(predicate)
 
 def is_admin():
     def predicate(ctx):
-        if ctx.author.id not in config.adminids:
-            raise commands.NotOwner()
-        else:
+        if ctx.author.id in config.adminids:
             return True
+        else:
+            raise commands.NotOwner()
 
     return commands.check(predicate)
