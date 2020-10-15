@@ -21,7 +21,4 @@ async def on_ready():
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
 
 
-extensions = ["cogs.events", "cogs.moderation", "cogs.error", "cogs.admin", "cogs.channel_management"]
-
-
 bot.run(token)
