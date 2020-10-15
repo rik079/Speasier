@@ -1,4 +1,4 @@
-# Copyright(C) 2020 Rik079
+# Copyright(C) 2020 Speasy
 
 import discord
 from discord.ext import commands
