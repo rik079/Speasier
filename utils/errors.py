@@ -1,4 +1,4 @@
-# Copyright(C) 2020 Rik079
+# Copyright(C) 2020 Speasy
 
 import discord
 from discord.ext import commands
@@ -31,7 +31,7 @@ class ErrorCog(commands.Cog):
             await ctx.send(
                 embed=discord.Embed(
                     title="Command not available",
-                    description="This can only be used ina  DM",
+                    description="This can only be used in a DM",
                     colour=discord.Colour.red(),
                 )
             )

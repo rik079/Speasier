@@ -9,7 +9,8 @@ path = ""
 # Modules (remove from list to disable module)
 
 extensions = [
-    "modules.botadmin"
+    "modules.botadmin",
+    "modules.dadjokes"
 ]
 
 # Staff
