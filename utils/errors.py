@@ -31,7 +31,7 @@ class ErrorCog(commands.Cog):
             await ctx.send(
                 embed=discord.Embed(
                     title="Command not available",
-                    description="This can only be used ina  DM",
+                    description="This can only be used in a DM",
                     colour=discord.Colour.red(),
                 )
             )
