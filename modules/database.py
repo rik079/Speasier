@@ -7,14 +7,6 @@ from utils import checks
 database = sqlite3.connect("speasier_db.db")
 
 
-def db_init():
-    cur = database.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS 'users' ( \
-    'UserID' INTEGER NOT NULL UNIQUE, \
-    'Voice'	TEXT, \
-    PRIMARY KEY('UserID'));")
-
-
 class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -28,3 +20,7 @@ class Database(commands.Cog):
         database.commit()
         for row in rows:
             await ctx.send(row)
+
+
+def setup(bot):
+    bot.add_cog(Database(bot))

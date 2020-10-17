@@ -2,8 +2,6 @@
 
 import discord
 from discord.ext import commands
-from modules import database
-
 import config
 
 
@@ -13,9 +11,6 @@ description = """Speasier Discord server text-to-speech bot"""
 bot = commands.Bot(command_prefix="?", description=description)
 
 client = discord.Client()
-
-
-database.db_init()
 
 
 @bot.event
