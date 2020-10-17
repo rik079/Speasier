@@ -2,7 +2,7 @@
 
 import discord
 from discord.ext import commands
-from dadjokes import dadjokes
+import dadjokes
 
 class DadJokes(commands.Cog):
     def __init__(self, bot):
