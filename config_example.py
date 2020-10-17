@@ -10,7 +10,8 @@ path = ""
 
 extensions = [
     "modules.botadmin",
-    "modules.dadjokes"
+    "modules.dadjokes",
+    "modules.database"
 ]
 
 # Staff
