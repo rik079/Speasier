@@ -21,6 +21,7 @@ client = discord.Client()
 async def on_ready():
     for cog in config.extensions:
         bot.load_extension(cog)
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("speaking slave for you"))
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
 
 @bot.command()
