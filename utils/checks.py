@@ -1,8 +1,8 @@
 # Copyright(C) 2020 Speasy
 
-import discord
 from discord.ext import commands
 import config
+
 
 def is_tech():
     def predicate(ctx):
@@ -12,6 +12,7 @@ def is_tech():
             raise commands.MissingPermissions(missing_perms="Tech")
 
     return commands.check(predicate)
+
 
 def is_admin():
     def predicate(ctx):

@@ -16,8 +16,8 @@ extensions = [
 # Staff
 # ------------------------
 
-# Admins (SockFiddler, TorTorden)
+# Admins
 adminids = []
 
-# Tech guys (Rik079, Micro-T)
+# Tech guys
 botadminids = []

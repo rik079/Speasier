@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 from dadjokes import dadjokes
 
+
 class DadJokes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -11,7 +12,7 @@ class DadJokes(commands.Cog):
     @commands.command()
     async def dadjoke(self, ctx, search=''):
         if search != '':
-            #TODO put the actual search function here
+            # TODO put the actual search function here
             joke = dadjokes.Dadjoke()
             embed = discord.Embed(title=joke.joke,
                                   colour=discord.Color.blue())
