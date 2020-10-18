@@ -23,9 +23,19 @@ class Database(commands.Cog):
     @checks.is_tech()
     async def sql(self, ctx, *, query):
         cur = database.cursor()
-        cur.execute(query)
-        rows = cur.fetchall()
-        database.commit()
+        success_flg = True
+        try:
+            cur.execute(query)
+            rows = cur.fetchall()
+            database.commit()
+        except:
+            success_flg = False
+
+        if success_flg == False:
+            return await ctx.send("Something went wrong")
+        elif success_flg == True:
+            await ctx.send("Query valid.")
+
         for row in rows:
             await ctx.send(row)
 
