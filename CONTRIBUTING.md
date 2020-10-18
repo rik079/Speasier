@@ -10,7 +10,7 @@ Coordination for the project is done on #coders-and-bott-butts on Discord.
 
 ## Branch naming conventions
 
-Branches with new features or improvements are to be named `feature/speasier-{IssueID}`. For bugfixes, `fix/speasier-{IssueID}`, and for documentation changes, `doc/{doc-you're updating}
+Branches with new features or improvements are to be named `feature/speasier-{IssueID}`. For bugfixes, `fix/speasier-{IssueID}`, and for documentation changes, `doc/{doc-you're updating}`
 
 ## Pull requests
 
