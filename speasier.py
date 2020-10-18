@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import config
 from modules import database
+import os
 
 
 token = config.token
@@ -14,12 +15,15 @@ bot = commands.Bot(command_prefix="?", description=description)
 client = discord.Client()
 
 
+for filename in os.listdir('./modules'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'modules.{filename[:-3]}')
+
 @bot.event
-async def on_ready():
-    for cog in config.extensions:
-        bot.load_extension(cog)
+async def on_ready():     
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("speaking slave for you"))
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
+
 
 
 @bot.command()
