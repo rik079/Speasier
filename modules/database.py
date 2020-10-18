@@ -23,18 +23,15 @@ class Database(commands.Cog):
     @checks.is_tech()
     async def sql(self, ctx, *, query):
         cur = database.cursor()
-        success_flg = True
         try:
             cur.execute(query)
             rows = cur.fetchall()
             database.commit()
-        except:
-            success_flg = False
+        except sqlite3.Error as er:
+            return await ctx.send(f"An error coccured: `{er}`")
 
-        if success_flg == False:
-            return await ctx.send("Something went wrong")
-        elif success_flg == True:
-            await ctx.send("Query valid.")
+        
+        await ctx.send("Query valid.")
 
         for row in rows:
             await ctx.send(row)
