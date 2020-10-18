@@ -7,6 +7,14 @@ from utils import checks
 database = sqlite3.connect("speasier_db.db")
 
 
+def db_init():
+    cur = database.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS 'users'"
+                "('DiscordID' TEXT NOT NULL UNIQUE, 'Name' TEXT, 'Voice' TEXT, PRIMARY "
+                "KEY('DiscordID'));")
+    print("Database initialised and ready to go")
+
+
 class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
