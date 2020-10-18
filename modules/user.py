@@ -17,7 +17,7 @@ class UserManagement(commands.Cog):
             rows = cur.fetchall()
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: {er}")
+            return await ctx.send(f"An error coccured: `{er}`")
         
         if len(rows) == 1:
             data = rows[0]
@@ -27,10 +27,31 @@ class UserManagement(commands.Cog):
             cur.execute("INSERT INTO users(DiscordID, Name, Voice) VALUES(?, ?, ?)", [ctx.author.id, ctx.author.name, cmd])
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: {er}")
+            return await ctx.send(f"An error coccured: `{er}`")
 
         await ctx.send("Successfully registered")
 
+
+    @commands.command()
+    async def unregister(self, ctx):
+        cur = database.cursor()
+        try:
+            cur.execute("SELECT * FROM users WHERE DiscordID = ?", [ctx.author.id])
+            rows = cur.fetchall()
+            database.commit()
+        except sqlite3.Error as er:
+            return await ctx.send(f"An error coccured: `{er}`")
+
+        if len(rows) != 1:
+            return await ctx.send("You don't have a registered voice!")
+
+        try:
+            cur.execute("DELETE FROM users WHERE DiscordID = ?", [ctx.author.id])
+            database.commit()
+        except sqlite3.Error as er:
+            return await ctx.send(f"An error coccured: `{er}`")
+
+        await ctx.send("Successfully unregistered")
 
 def setup(bot):
     bot.add_cog(UserManagement(bot))
