@@ -10,14 +10,15 @@ path = ""
 
 extensions = [
     "modules.botadmin",
-    "modules.dadjokes"
+    "modules.dadjokes",
+    "modules.database"
 ]
 
 # Staff
 # ------------------------
 
-# Admins (SockFiddler, TorTorden)
+# Admins
 adminids = []
 
-# Tech guys (Rik079, Micro-T)
+# Tech guys
 botadminids = []
