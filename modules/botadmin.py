@@ -10,20 +10,26 @@ class BotAdmin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.group()
     @checks.is_tech()
-    async def debug(self, ctx, cmd, *, info=''):
-        if cmd == 'tts':
-            await ctx.send(f"!tts This is a Speasier test. 1. 2. 3. 4. 5. Test completed")
-        elif cmd == 'shutdown':
-            await ctx.send("Noo! I urge you to reconsider *dies*")
-            await self.bot.close()
-        elif cmd == 'shell':
-            os.system(f"{info}")
-        elif cmd == 'ping':
-            embed = discord.Embed(title="Pong!",
-                                  description=f"Latency: {round(self.bot.latency, 1)} second")
-            await ctx.send(embed=embed)
+    async def debug(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Please specify a valid subcommand.")
+
+    @debug.command()
+    async def shutdown(self, ctx):
+        await ctx.send("Noo! I urge you to reconsider *dies*")
+        await self.bot.close()
+
+    @debug.command()
+    async def shell(self, command):
+        os.system(command)
+
+    @debug.command()
+    async def ping(self, ctx):
+        embed = discord.Embed(title="Pong!",
+                              description=f"Latency: {round(self.bot.latency, 1)} second")
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
