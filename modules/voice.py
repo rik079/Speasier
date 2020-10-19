@@ -7,16 +7,9 @@ class Voice(commands.Cog):
     @commands.command()
     async def join(self, ctx):
         # Gets voice channel of message author
-        print(ctx.author)
-        voice_channel = ctx.author.voice
-        channel = None
-        if voice_channel != None:
-            #channel = voice_channel.name
-            vc = "683327300288512027"
-            await ctx.bot.join_voice_channel(vc)
-
-        else:
-            await ctx.send("You are not connected to any voice channel")
+        channel = ctx.author.voice.channel
+        await channel.connect()
+        
 
 def setup(bot):
     bot.add_cog(Voice(bot))
