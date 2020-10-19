@@ -31,7 +31,7 @@ class Database(commands.Cog):
             rows = cur.fetchall()
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: `{er}`")
+            return await ctx.send(f"An error occurred: `{er}`")
         await ctx.send("Query valid.")
         for row in rows:
             await ctx.send(row)
