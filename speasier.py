@@ -35,5 +35,16 @@ async def falconlaunch(ctx):
 async def ping(ctx):
     await ctx.message.add_reaction('\U0001F3D3')
 
+
+@bot.command()
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+
+@bot.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
+
 database.db_init()
 bot.run(token)
