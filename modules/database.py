@@ -12,6 +12,9 @@ def db_init():
     cur.execute("CREATE TABLE IF NOT EXISTS 'users'"
                 "('DiscordID' TEXT NOT NULL UNIQUE, 'Name' TEXT, 'Voice' TEXT, PRIMARY "
                 "KEY('DiscordID'));")
+    cur.execute("CREATE TABLE IF NOT EXISTS 'channels'"
+                "('GuildID' TEXT NOT NULL UNIQUE, 'ChannelID'	TEXT NOT NULL,"
+                "'VChannelID' TEXT NOT NULL);")
     print("Database initialised and ready to go")
 
 
@@ -29,10 +32,7 @@ class Database(commands.Cog):
             database.commit()
         except sqlite3.Error as er:
             return await ctx.send(f"An error coccured: `{er}`")
-
-        
         await ctx.send("Query valid.")
-
         for row in rows:
             await ctx.send(row)
 
