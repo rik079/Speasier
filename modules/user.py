@@ -33,7 +33,7 @@ class UserManagement(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def register(self, ctx, cmd):
+    async def register(self, ctx, voice):
         cur = database.cursor()
         try:
             cur.execute("SELECT * FROM users WHERE DiscordID = ?",
@@ -49,7 +49,7 @@ class UserManagement(commands.Cog):
 
         try:
             cur.execute("INSERT INTO users(DiscordID, Name, Voice) VALUES(?, ?, ?)", [
-                        ctx.author.id, ctx.author.name, cmd])
+                        ctx.author.id, ctx.author.name, voice])
             database.commit()
         except sqlite3.Error as er:
             return await ctx.send(f"An error coccured: `{er}`")
