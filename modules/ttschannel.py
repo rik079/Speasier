@@ -38,13 +38,13 @@ class TTSchannel(commands.Cog):
             return await ctx.send(f"Couldn't reach database, contact a tech: 1 {error}")
 
         if len(res) != 0:
-            embed = discord.Embed(title=f"Channel is already registered as TTS for {res[0][3]}",
+            embed = discord.Embed(title=f"{res[0][4]} is already registered as TTS for {res[0][3]}",
                                   color=discord.Color.blue())
             return await ctx.send(embed=embed)
         # Now, do the same for the voice channel
         try:
-            cur.execute(f"Select * from channels "
-                        f"where VChannelID = '{vchannelid}'")
+            res = cur.execute(f"Select * from channels "
+                        f"where VChannelID = '{vchannelid}'").fetchall()
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach database, contact a tech: 2 {error}")
 
