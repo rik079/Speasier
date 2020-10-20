@@ -1,18 +1,18 @@
+# Copyright (c) 2020 Rik079, Worthy Alpaca, Zibadian, Micro-T. All rights reserved.
+
 __version__ = "Alpha"
 
 # Discord login Token
 token = ""
 
-# File path to bot
-path = ""
+# Path to modules folder
+modulepath = "./modules"
 
-# Modules (remove from list to disable module)
+# AWS credentials
 
-extensions = [
-    "modules.botadmin",
-    "modules.dadjokes",
-    "modules.database"
-]
+aws_id = ''
+aws_secret = ''
+aws_region = 'us-west-2'
 
 # Staff
 # ------------------------

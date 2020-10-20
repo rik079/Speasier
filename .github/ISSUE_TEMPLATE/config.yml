@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Questions
-    url: https://discordapp.com/channels/146584994125447168/727108575507513415
-    about: Questions about the bot can be asked here: (works for Speasy members only)
+  - name: Ask a question
+    url: https://discordapp.com/channels/146584994125447168/766293980093743165/
+    about: Link only works for Speasy members
+  - name: Bot command reference and wiki
+    about: (Work in progress)
+    url: https://github.com/rik079/Speasier/wiki

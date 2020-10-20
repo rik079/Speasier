@@ -1,2 +1,3 @@
 discord~=1.0.1
 dadjokes~=1.3.2
+boto3~=1.16.1
