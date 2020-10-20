@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import os
 from utils import checks
+from modules import polly
 
 
 class BotAdmin(commands.Cog):
@@ -31,6 +32,13 @@ class BotAdmin(commands.Cog):
                               description=f"Latency: {round(self.bot.latency, 1)} second")
         await ctx.send(embed=embed)
 
+    @debug.command()
+    async def tts(self, ctx, voice, *, text):
+        try:
+            polly.synth(voice, text)
+            await ctx.send("Manual file creation completed.")
+        except:
+            return await ctx.send("Unable to create synth file.")
 
 def setup(bot):
     bot.add_cog(BotAdmin(bot))
