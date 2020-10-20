@@ -5,6 +5,7 @@ from discord.ext import commands
 import config
 from modules import database
 import os
+import boto3
 
 
 token = config.token
@@ -14,6 +15,9 @@ bot = commands.Bot(command_prefix="?", description=description)
 
 client = discord.Client()
 
+polly_client = boto3.Session(aws_access_key_id=config.aws_id,
+                             aws_secret_access_key=config.aws_secret,
+                             region_name=config.aws_region).client('polly')
 
 for filename in os.listdir(config.modulepath):
     if filename.endswith('.py'):

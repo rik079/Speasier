@@ -8,6 +8,12 @@ token = ""
 # Path to modules folder
 modulepath = "./modules"
 
+# AWS credentials
+
+aws_id = ''
+aws_secret = ''
+aws_region = 'us-west-2'
+
 # Staff
 # ------------------------
 
