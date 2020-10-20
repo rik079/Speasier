@@ -26,37 +26,41 @@ class TTSchannel(commands.Cog):
             await ctx.send(embed=embed)
 
     @channel.command()
-    async def register(self, ctx, vchannelid, *, vchannelname):
+    async def register(self, ctx, *, vchannelname):
         # Check if text channel is already registered
         # Note that vchannelname doesn't have to match it's actual name
         try:
             cur = database.cursor()
-            res = cur.execute(f"Select * from channels "
-                              f"where ChannelID = '{ctx.channel.id}'").fetchall()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE ChannelID = '{ctx.channel.id}'").fetchall()
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach database, contact a tech: 1 {error}")
 
-        if len(res) != 0:
-            embed = discord.Embed(title=f"{res[0][4]} is already registered as TTS for {res[0][3]}",
+        channel = discord.utils.get(ctx.guild.channels, name=vchannelname)
+
+        if len(res) != 0:            
+            vchnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][2]))            
+            chnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][1]))            
+            embed = discord.Embed(title=f"{chnlname.name} is already registered as TTS for {vchnlname.name}",
                                   color=discord.Color.blue())
             return await ctx.send(embed=embed)
         # Now, do the same for the voice channel
         try:
-            res = cur.execute(f"Select * from channels "
-                              f"where VChannelID = '{vchannelid}'").fetchall()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE VChannelID = '{channel.id}'").fetchall()
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach database, contact a tech: 2 {error}")
 
         if len(res) != 0:
-            embed = discord.Embed(title=f"This voice chat already has a TTS channel: {res[0][4]}",
+            chnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][1]))
+            embed = discord.Embed(title=f"This voice chat already has a TTS channel: {chnlname.name}",
                                   color=discord.Color.blue())
             return await ctx.send(embed=embed)
 
         try:
-            cur.execute(f"insert into channels (GuildID,ChannelID,VChannelID,"
-                        f"VChannelName,ChannelName)"
-                        f"values('{ctx.guild.id}', '{ctx.channel.id}',"
-                        f"'{vchannelid}', '{vchannelname}', '{ctx.channel.name}')")
+            cur.execute(f"INSERT INTO channels (GuildID,ChannelID,VChannelID)"
+                        f"VALUES('{ctx.guild.id}', '{ctx.channel.id}',"
+                        f"'{channel.id}')")
             database.commit()
             embed = discord.Embed(title="Channel successfully registered",
                                   color=discord.Color.dark_green())
@@ -70,8 +74,8 @@ class TTSchannel(commands.Cog):
         # Look up if channel is registered
         try:
             cur = database.cursor()
-            res = cur.execute(f"select * from channels "
-                              f"where ChannelID = {ctx.channel.id}").fetchall()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE ChannelID = {ctx.channel.id}").fetchall()
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach the database, contact a tech: {error}")
 
@@ -83,8 +87,8 @@ class TTSchannel(commands.Cog):
         # Else, unregister the channel
         else:
             try:
-                cur.execute(f"delete from channels "
-                            f"where ChannelID = {ctx.channel.id}")
+                cur.execute(f"DELETE FROM channels "
+                            f"WHERE ChannelID = {ctx.channel.id}")
                 database.commit()
                 embed = discord.Embed(title="Channel successfully unregistered",
                                       color=discord.Color.dark_red())
