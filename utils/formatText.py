@@ -1,6 +1,6 @@
 import re
 
-def sanitizeText(text):
+def formatText(text):
     return __replaceLink(text)
 
 def __replaceLink(text):
