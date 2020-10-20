@@ -3,7 +3,6 @@
 import discord
 from discord.ext import commands
 import speasier
-from utils import checks
 from modules import database
 import sqlite3
 
@@ -44,7 +43,7 @@ class TTSchannel(commands.Cog):
         # Now, do the same for the voice channel
         try:
             res = cur.execute(f"Select * from channels "
-                        f"where VChannelID = '{vchannelid}'").fetchall()
+                              f"where VChannelID = '{vchannelid}'").fetchall()
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach database, contact a tech: 2 {error}")
 
@@ -59,10 +58,39 @@ class TTSchannel(commands.Cog):
                         f"values('{ctx.guild.id}', '{ctx.channel.id}',"
                         f"'{vchannelid}', '{vchannelname}', '{ctx.channel.name}')")
             database.commit()
-            embed = discord.Embed(title="Channel successfully registered")
+            embed = discord.Embed(title="Channel successfully registered",
+                                  color=discord.Color.dark_green())
             await ctx.send(embed=embed)
         except sqlite3.Error as error:
+
             await ctx.send(f"Couldn't register channel, contact a tech: {error}")
+
+    @channel.command()
+    async def unregister(self, ctx):
+        # Look up if channel is registered
+        try:
+            cur = database.cursor()
+            res = cur.execute(f"select * from channels "
+                              f"where ChannelID = {ctx.channel.id}").fetchall()
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't reach the database, contact a tech: {error}")
+
+        # If channel isn't registered, return
+        if len(res) == 0:
+            embed = discord.Embed(title=f"Cannot comply: #{ctx.channel.name} isn't registered!",
+                                  color=discord.Color.orange())
+            return await ctx.send(embed=embed)
+        # Else, unregister the channel
+        else:
+            try:
+                cur.execute(f"delete from channels "
+                            f"where ChannelID = {ctx.channel.id}")
+                database.commit()
+                embed = discord.Embed(title="Channel successfully unregistered",
+                                      color=discord.Color.dark_red())
+                await ctx.send(embed=embed)
+            except sqlite3.Error as error:
+                return await ctx.send(f"Couldn't unregister channel, contact a tech: {error}")
 
 
 def setup(bot):
