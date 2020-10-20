@@ -41,7 +41,7 @@ class UserManagement(commands.Cog):
             rows = cur.fetchall()
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: `{er}`")
+            return await ctx.send(f"An error occurred: `{er}`")
 
         if len(rows) == 1:
             data = rows[0]
@@ -52,7 +52,7 @@ class UserManagement(commands.Cog):
                         ctx.author.id, ctx.author.name, voice])
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: `{er}`")
+            return await ctx.send(f"An error occurred: `{er}`")
 
         await ctx.send("Successfully registered")
 
@@ -65,7 +65,7 @@ class UserManagement(commands.Cog):
             rows = cur.fetchall()
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: `{er}`")
+            return await ctx.send(f"An error occurred: `{er}`")
 
         if len(rows) != 1:
             return await ctx.send("You don't have a registered voice!")
@@ -75,9 +75,10 @@ class UserManagement(commands.Cog):
                         [ctx.author.id])
             database.commit()
         except sqlite3.Error as er:
-            return await ctx.send(f"An error coccured: `{er}`")
+            return await ctx.send(f"An error occurred: `{er}`")
 
         await ctx.send("Successfully unregistered")
+
 
 def setup(bot):
     bot.add_cog(UserManagement(bot))

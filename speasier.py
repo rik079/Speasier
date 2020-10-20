@@ -35,5 +35,6 @@ async def falconlaunch(ctx):
 async def ping(ctx):
     await ctx.message.add_reaction('\U0001F3D3')
 
+
 database.db_init()
 bot.run(token)
