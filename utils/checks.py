@@ -1,4 +1,4 @@
-# Copyright(C) 2020 Speasy
+# Copyright (c) 2020 Rik079, Worthy Alpaca, Zibadian, Micro-T. All rights reserved.
 
 from discord.ext import commands
 import config
