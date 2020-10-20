@@ -13,7 +13,7 @@ def db_init():
                 "('DiscordID' TEXT NOT NULL UNIQUE, 'Name' TEXT, 'Voice' TEXT, PRIMARY "
                 "KEY('DiscordID'));")
     cur.execute("CREATE TABLE IF NOT EXISTS 'channels'"
-                "('GuildID' TEXT NOT NULL UNIQUE, 'ChannelID'	TEXT NOT NULL,"
+                "('GuildID' TEXT NOT NULL, 'ChannelID' TEXT NOT NULL UNIQUE,"
                 "'VChannelID' TEXT NOT NULL,"
                 "'VChannelName' TEXT NOT NULL,"
                 "'ChannelName' TEXT NOT NULL);")
