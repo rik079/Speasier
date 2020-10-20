@@ -2,7 +2,7 @@
 
 import discord
 from discord.ext import commands
-from discord.ext.commands import CommandNotFound
+import discord.ext.commands as errors
 import config
 from modules import database
 import os
@@ -29,7 +29,9 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
+    if isinstance(error, errors.CommandNotFound):
+        return await ctx.send(error)
+    if isinstance(error, errors.RoleNotFound):
         return await ctx.send(error)
 
 @bot.command()
