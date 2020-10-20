@@ -1,2 +1,10 @@
+# Config file
+config.py
+
+# Database
+/speasier_db.db
+
+# IDE files
 .vscode
 __pycache__
+
