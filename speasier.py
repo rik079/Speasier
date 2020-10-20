@@ -2,6 +2,7 @@
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 import config
 from modules import database
 import os
@@ -25,6 +26,11 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("speaking slave for you"))
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
 
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return await ctx.send(error)
 
 @bot.command()
 async def falconlaunch(ctx):
