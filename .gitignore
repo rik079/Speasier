@@ -7,3 +7,4 @@ config.py
 # IDE files
 .vscode
 __pycache__
+
