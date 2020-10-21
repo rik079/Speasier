@@ -10,7 +10,7 @@ database = sqlite3.connect("speasier_db.db")
 def db_init():
     cur = database.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS 'users'"
-                "('DiscordID' TEXT NOT NULL UNIQUE, 'Name' TEXT, 'Voice' TEXT, PRIMARY "
+                "('DiscordID' TEXT NOT NULL UNIQUE, 'Name' TEXT, 'VoiceID' TEXT, PRIMARY "
                 "KEY('DiscordID'));")
     cur.execute("CREATE TABLE IF NOT EXISTS 'channels'"
                 "('GuildID' TEXT NOT NULL, 'ChannelID' TEXT NOT NULL UNIQUE,"
@@ -22,7 +22,8 @@ class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(description="Run an SQL query on the database",
+                      usage="[query]")
     @checks.is_tech()
     async def sql(self, ctx, *, query):
         cur = database.cursor()

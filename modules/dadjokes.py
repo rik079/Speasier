@@ -10,7 +10,7 @@ class DadJokes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(description="Get a dadjoke")
     async def dadjoke(self, ctx, search=''):
         if search != '':
             jokes = list(iter(dadjokes.DadjokeSearch(search)))

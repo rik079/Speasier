@@ -15,7 +15,7 @@ class TTSchannel(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group()
+    @commands.group(description="Set channel settings", usage="[subcommand] <arguments>")
     async def channel(self, ctx):
         if ctx.invoked_subcommand is None:
             embed = discord.Embed(title="Channel settings",
@@ -25,10 +25,9 @@ class TTSchannel(commands.Cog):
                                   f"<Channel name>")
             await ctx.send(embed=embed)
 
-    @channel.command()
+    @channel.command(description="Register a channel", usage="[voice channel name]")
     async def register(self, ctx, *, vchannelname):
         # Check if text channel is already registered
-        # Note that vchannelname doesn't have to match it's actual name
         try:
             cur = database.cursor()
             res = cur.execute(f"SELECT * FROM channels "
@@ -69,7 +68,7 @@ class TTSchannel(commands.Cog):
 
             await ctx.send(f"Couldn't register channel, contact a tech: {error}")
 
-    @channel.command()
+    @channel.command(description="Unregister channel")
     async def unregister(self, ctx):
         # Look up if channel is registered
         try:
@@ -95,6 +94,36 @@ class TTSchannel(commands.Cog):
                 await ctx.send(embed=embed)
             except sqlite3.Error as error:
                 return await ctx.send(f"Couldn't unregister channel, contact a tech: {error}")
+
+    @channel.command(description="Get info about this channel")
+    async def profile(self, ctx):
+        # Check if channel is registered
+        try:
+            cur = database.cursor()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE ChannelID = {ctx.channel.id}").fetchall()
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't reach the database, contact a tech: {error}")
+
+        # If channel isn't registered, return
+        if len(res) == 0:
+            channel_name = ctx.channel.name
+            embed = discord.Embed(title=f"#{channel_name}",
+                                  color=discord.Color.blue(),
+                                  description="This channel is not registered. "
+                                              "To register it, use "
+                                              "`?channel register <voice channel>`")
+            embed.set_author(name="TTS Channel profile")
+            return await ctx.send(embed=embed)
+
+        # Else, display profile info
+        channel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][1])))
+        vchannel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][2])))
+        embed = discord.Embed(title=f"#{channel_name}",
+                              color=discord.Color.blue())
+        embed.add_field(name="Voice channel", value=vchannel_name)
+        embed.set_author(name="TTS Channel profile")
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
