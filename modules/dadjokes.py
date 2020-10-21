@@ -3,6 +3,7 @@
 import discord
 from discord.ext import commands
 import dadjokes
+import random
 
 
 class DadJokes(commands.Cog):
@@ -12,13 +13,19 @@ class DadJokes(commands.Cog):
     @commands.command()
     async def dadjoke(self, ctx, search=''):
         if search != '':
-            # TODO put the actual search function here
-            joke = dadjokes.Dadjoke()
-            embed = discord.Embed(title=joke.joke,
-                                  colour=discord.Color.blue())
-            embed.set_footer(text="Unfortunately, the dad joke search function "
-                                  "doesn't work yet :( here's a random joke for now!")
-            await ctx.send(embed=embed)
+            jokes = list(iter(dadjokes.DadjokeSearch(search)))
+            if len(jokes) == 0:
+                joke = dadjokes.Dadjoke()
+                embed = discord.Embed(title=joke.joke,
+                                    colour=discord.Color.red())
+                embed.set_footer(text="We couldn't find a joke for \"" + search +
+                                      "\" so here's a random joke instead")
+                await ctx.send(embed=embed)
+            else:
+                joke = jokes[random.randint(0, len(jokes) - 1)]
+                embed = discord.Embed(title=joke.joke,
+                                        colour=discord.Color.blue())
+                await ctx.send(embed=embed)
         else:
             joke = dadjokes.Dadjoke()
             embed = discord.Embed(title=joke.joke,
