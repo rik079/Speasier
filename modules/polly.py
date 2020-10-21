@@ -10,7 +10,7 @@ def synth(voice, text, filename='speech'):
     response = polly_client.synthesize_speech(VoiceId=voice,
                                               OutputFormat='mp3',
                                               Text=text)
-    file = open(f'{filename}.mp3', 'wb')
+    file = open(f'Speasier_audio/{filename}.mp3', 'wb')
     file.write(response['AudioStream'].read())
     file.close()
 
