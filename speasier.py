@@ -2,6 +2,7 @@
 
 import discord
 from discord.ext import commands
+import discord.ext.commands as errors
 import config
 from modules import database
 import os
@@ -29,15 +30,15 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("speaking slave for you"))
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
 
-
-@bot.command(description="Yeet")
-async def falconlaunch(ctx):
-    await ctx.send("https://www.youtube.com/watch?v=sB_nEtZxPog")
-
-
-@bot.command(description="Check if the bot is alive")
-async def ping(ctx):
-    await ctx.message.add_reaction('\U0001F3D3')
+# Error handler
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, errors.CommandNotFound):
+        return await ctx.send(error)
+    if isinstance(error, errors.RoleNotFound):
+        return await ctx.send(error)
+    if isinstance(error, errors.BadArgument):
+        return await ctx.send(error)
 
 
 database.db_init()
