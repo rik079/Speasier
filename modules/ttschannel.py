@@ -96,6 +96,36 @@ class TTSchannel(commands.Cog):
             except sqlite3.Error as error:
                 return await ctx.send(f"Couldn't unregister channel, contact a tech: {error}")
 
+    @channel.command()
+    async def profile(self, ctx):
+        # Check if channel is registered
+        try:
+            cur = database.cursor()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE ChannelID = {ctx.channel.id}").fetchall()
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't reach the database, contact a tech: {error}")
+
+        # If channel isn't registered, return
+        if len(res) == 0:
+            channel_name = ctx.channel.name
+            embed = discord.Embed(title=f"#{channel_name}",
+                                  color=discord.Color.blue(),
+                                  description="This channel is not registered. "
+                                              "To register it, use "
+                                              "`?channel register <voice channel>`")
+            embed.set_author(name="TTS Channel profile")
+            return await ctx.send(embed=embed)
+
+        # Else, display profile info
+        channel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][1])))
+        vchannel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][2])))
+        embed = discord.Embed(title=f"#{channel_name}",
+                              color=discord.Color.blue())
+        embed.add_field(name="Voice channel", value=vchannel_name)
+        embed.set_author(name="TTS Channel profile")
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(TTSchannel(bot))
