@@ -30,12 +30,12 @@ async def on_ready():
     print(f"The bot is logged in as {bot.user.name} now! have a wonderful day!")
 
 
-@bot.command()
+@bot.command(description="Yeet")
 async def falconlaunch(ctx):
     await ctx.send("https://www.youtube.com/watch?v=sB_nEtZxPog")
 
 
-@bot.command()
+@bot.command(description="Check if the bot is alive")
 async def ping(ctx):
     await ctx.message.add_reaction('\U0001F3D3')
 
