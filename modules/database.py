@@ -14,7 +14,8 @@ def db_init():
                 "KEY('DiscordID'));")
     cur.execute("CREATE TABLE IF NOT EXISTS 'channels'"
                 "('GuildID' TEXT NOT NULL, 'ChannelID' TEXT NOT NULL UNIQUE,"
-                "'VChannelID' TEXT NOT NULL);")
+                "'VChannelID' TEXT NOT NULL,"
+                "'Soundboard' TEXT);")
     print("Database initialised and ready to go")
 
 

@@ -57,9 +57,9 @@ class TTSchannel(commands.Cog):
             return await ctx.send(embed=embed)
 
         try:
-            cur.execute(f"INSERT INTO channels (GuildID,ChannelID,VChannelID)"
+            cur.execute(f"INSERT INTO channels (GuildID,ChannelID,VChannelID,Soundboard)"
                         f"VALUES('{ctx.guild.id}', '{ctx.channel.id}',"
-                        f"'{channel.id}')")
+                        f"'{channel.id}', 'On')")
             database.commit()
             embed = discord.Embed(title="Channel successfully registered",
                                   color=discord.Color.dark_green())
@@ -119,11 +119,42 @@ class TTSchannel(commands.Cog):
         # Else, display profile info
         channel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][1])))
         vchannel_name = discord.utils.get(ctx.guild.channels, id=(int(res[0][2])))
+        soundboard_setting = res[0][3]
         embed = discord.Embed(title=f"#{channel_name}",
                               color=discord.Color.blue())
         embed.add_field(name="Voice channel", value=vchannel_name)
+        embed.add_field(name="Soundboard", value=soundboard_setting)
         embed.set_author(name="TTS Channel profile")
         await ctx.send(embed=embed)
+
+    @channel.command(description="Enable/disable soundboard, toggles on/off")
+    async def soundboard(self, ctx):
+        # Get current setting
+        try:
+            cur = database.cursor()
+            res = cur.execute(f"SELECT Soundboard FROM channels "
+                              f"WHERE ChannelID = {ctx.channel.id}").fetchall()
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't reach the database, contact a tech: {error}")
+        # If it's off, turn it on
+        if res[0][0] == "Off":
+            action = "On"
+        # And if it's on, turn it Off
+        elif res[0][0] == "On":
+            action = "Off"
+        # Else, error
+        else:
+            return await ctx.send("Oh noes! setting is not registered in the database correctly. "
+                                  "Contact a tech!")
+        # Commit action to the database now
+        try:
+            cur.execute(f"UPDATE channels "
+                        f"SET Soundboard = '{action}' "
+                        f"WHERE ChannelID = {ctx.channel.id}")
+            database.commit()
+            await ctx.send(embed=discord.Embed(title=f"Soundboard in this channel is now {action}"))
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't update setting! contact a tech! {error}")
 
 
 def setup(bot):
