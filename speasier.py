@@ -41,5 +41,9 @@ async def on_command_error(ctx, error):
         return await ctx.send(error)
 
 
+if not os.path.exists('Speasier_audio'):
+    os.makedirs('Speasier_audio')
+if not os.path.exists('Speasier_audio/Soundboard'):
+    os.makedirs('Speasier_audio/Soundboard')
 database.db_init()
 bot.run(token)
