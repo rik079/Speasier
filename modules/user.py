@@ -12,7 +12,7 @@ class UserManagement(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(description="Get info about your TTS status")
     async def profile(self, ctx):
         cur = database.cursor()
         try:
@@ -32,7 +32,7 @@ class UserManagement(commands.Cog):
         embed.add_field(name="Voice:", value=rows[0][2])
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Register a TTS voice", usage="[voice]")
     async def register(self, ctx, voice):
         cur = database.cursor()
         try:
@@ -56,7 +56,7 @@ class UserManagement(commands.Cog):
 
         await ctx.send("Successfully registered")
 
-    @commands.command()
+    @commands.command(description="Unregister yourself from Speasier TTS")
     async def unregister(self, ctx):
         cur = database.cursor()
         try:

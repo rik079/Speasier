@@ -22,7 +22,8 @@ class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(description="Run an SQL query on the database",
+                      usage="[query]")
     @checks.is_tech()
     async def sql(self, ctx, *, query):
         cur = database.cursor()
