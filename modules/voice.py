@@ -1,6 +1,7 @@
 from discord.ext import commands
 from speasier import client
 
+global VCchannel
 class Voice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -11,7 +12,7 @@ class Voice(commands.Cog):
         if ctx.author.voice == None:
             return await ctx.send("You need to join the voice channel before you can do that")
         channel = ctx.author.voice.channel
-        await channel.connect()
+        VCchannel = await channel.connect()
 
     @commands.command()
     async def leave(self, ctx):

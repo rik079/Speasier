@@ -4,6 +4,7 @@ from modules import database
 from discord.utils import get
 from speasier import client
 import sqlite3
+from modules import polly
 
 database = database.database
 
@@ -44,13 +45,23 @@ class MessageHandler(commands.Cog):
         except sqlite3.Error as er:
             return await ctx.send(f"An error coccured: `{er}`")
 
-        if len(rows2) != 1:
-            return print("returning")
-
         data = rows2[0]
-        role = discord.utils.get(user.guild.roles, id=int(data[2]))
+        if len(rows2) != 1:
+            role = None
+        else:
+            voice = data[2]
+            role = discord.utils.get(user.guild.roles, id=int(data[2]))
         
         # from here we need to call the polly API and then send the response into a voice channel
+        # can't test this but it should work
+        
+        # use micro's function to clean the message
+        # for now it's just the message as is
+        message = ctx.message
+        
+        #polly.synth(role, message)
+        #voice.VCchannel.play(polly.synth(role, message), after=None)
+        # maybe it doesn't work, I dunno
 
 
     
