@@ -33,6 +33,8 @@ async def on_command_error(ctx, error):
         return await ctx.send(error)
     if isinstance(error, errors.RoleNotFound):
         return await ctx.send(error)
+    if isinstance(error, errors.BadArgument):
+        return await ctx.send(error)
 
 database.db_init()
 bot.run(token)
