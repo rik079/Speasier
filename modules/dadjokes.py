@@ -17,14 +17,14 @@ class DadJokes(commands.Cog):
             if len(jokes) == 0:
                 joke = dadjokes.Dadjoke()
                 embed = discord.Embed(title=joke.joke,
-                                    colour=discord.Color.red())
+                                      colour=discord.Color.red())
                 embed.set_footer(text="We couldn't find a joke for \"" + search +
                                       "\" so here's a random joke instead")
                 await ctx.send(embed=embed)
             else:
                 joke = jokes[random.randint(0, len(jokes) - 1)]
                 embed = discord.Embed(title=joke.joke,
-                                        colour=discord.Color.blue())
+                                      colour=discord.Color.blue())
                 await ctx.send(embed=embed)
         else:
             joke = dadjokes.Dadjoke()
