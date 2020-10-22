@@ -27,6 +27,7 @@ class TTSchannel(commands.Cog):
 
     @channel.command(description="Register a channel", usage="[voice channel name]")
     async def register(self, ctx, *, vchannelname):
+        channel = discord.utils.get(ctx.guild.channels, name=vchannelname)
         # Check if text channel is already registered
         try:
             cur = database.cursor()
@@ -35,8 +36,7 @@ class TTSchannel(commands.Cog):
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't reach database, contact a tech: 1 {error}")
 
-        channel = discord.utils.get(ctx.guild.channels, name=vchannelname)
-
+        # Return if already registered
         if len(res) != 0:            
             vchnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][2]))            
             chnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][1]))            
@@ -55,7 +55,11 @@ class TTSchannel(commands.Cog):
             embed = discord.Embed(title=f"This voice chat already has a TTS channel: {chnlname.name}",
                                   color=discord.Color.blue())
             return await ctx.send(embed=embed)
-
+        # Check if channel is a voice channel
+        if channel.type != discord.ChannelType.voice:
+            return await ctx.send(embed=discord.Embed(title="That's not a voice channel!",
+                                                      color=discord.Color.dark_red()))
+        # If all is okay, register the channel
         try:
             cur.execute(f"INSERT INTO channels (GuildID,ChannelID,VChannelID,Soundboard)"
                         f"VALUES('{ctx.guild.id}', '{ctx.channel.id}',"
@@ -160,9 +164,13 @@ class TTSchannel(commands.Cog):
     async def change_voicechat(self, ctx, *, newvc):
         # Convert newvc to ID
         voicechat = discord.utils.get(ctx.guild.channels, name=newvc)
-        # Return if channel doesn't exist
+        # Return if channel doesn't exist...
         if voicechat is None:
             return await ctx.send(embed=discord.Embed(title="Voice channel doesn't exist",
+                                                      color=discord.Color.dark_red()))
+        # ... or of it isn't a voice channel.
+        if voicechat.type != discord.ChannelType.voice:
+            return await ctx.send(embed=discord.Embed(title="That's not a voice channel!",
                                                       color=discord.Color.dark_red()))
         # Get info about the current channel
         try:
