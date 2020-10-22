@@ -5,6 +5,7 @@ from discord.ext import commands
 import os
 from utils import checks
 from modules import polly
+from modules import voice
 
 
 class BotAdmin(commands.Cog):
@@ -20,6 +21,7 @@ class BotAdmin(commands.Cog):
     @debug.command(description="Shut down the bot")
     async def shutdown(self, ctx):
         await ctx.send("Noo! I urge you to reconsider *dies*")
+        await ctx.voice_client.disconnect()
         await self.bot.close()
 
     @debug.command(description="Run a shell command", usage="[command]")
