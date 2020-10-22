@@ -21,8 +21,13 @@ class TTSchannel(commands.Cog):
             embed = discord.Embed(title="Channel settings",
                                   color=discord.Color.red())
             embed.add_field(name="Register as a TTS-channel",
-                            value=f"{prefix}channel register <voice channel ID> "
-                                  f"<Channel name>")
+                            value=f"{prefix}channel register [voice chat name]")
+            embed.add_field(name="Unregister a channel",
+                            value=f"{prefix}channel unregister")
+            embed.add_field(name="Enable/disable soundboard",
+                            value=f"{prefix}channel soundboard")
+            embed.add_field(name="Change the voice chat for this channel",
+                            value=f"{prefix}channel [new voice chat]")
             await ctx.send(embed=embed)
 
     @channel.command(description="Register a channel", usage="[voice channel name]")
@@ -54,6 +59,12 @@ class TTSchannel(commands.Cog):
             chnlname = discord.utils.get(ctx.guild.channels, id=int(res[0][1]))
             embed = discord.Embed(title=f"This voice chat already has a TTS channel: {chnlname.name}",
                                   color=discord.Color.blue())
+            return await ctx.send(embed=embed)
+        # Check if voice channel exists
+        if channel is None:
+            embed = discord.Embed(title="Voice channel doesn't exist",
+                                  color=discord.Color.dark_red())
+            embed.set_footer(text="Make sure to type in the excact name of the channel")
             return await ctx.send(embed=embed)
         # Check if channel is a voice channel
         if channel.type != discord.ChannelType.voice:
@@ -166,8 +177,10 @@ class TTSchannel(commands.Cog):
         voicechat = discord.utils.get(ctx.guild.channels, name=newvc)
         # Return if channel doesn't exist...
         if voicechat is None:
-            return await ctx.send(embed=discord.Embed(title="Voice channel doesn't exist",
-                                                      color=discord.Color.dark_red()))
+            embed = discord.Embed(title="Voice channel doesn't exist",
+                                  color=discord.Color.dark_red())
+            embed.set_footer(text="Make sure to type in the excact name of the channel")
+            return await ctx.send(embed=embed)
         # ... or of it isn't a voice channel.
         if voicechat.type != discord.ChannelType.voice:
             return await ctx.send(embed=discord.Embed(title="That's not a voice channel!",
