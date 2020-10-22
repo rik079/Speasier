@@ -156,6 +156,37 @@ class TTSchannel(commands.Cog):
         except sqlite3.Error as error:
             return await ctx.send(f"Couldn't update setting! contact a tech! {error}")
 
+    @channel.command(description="Change the voice chat this channel belongs to", usage="[new voice chat]")
+    async def change_voicechat(self, ctx, *, newvc):
+        # Convert newvc to ID
+        voicechat = discord.utils.get(ctx.guild.channels, name=newvc)
+        # Return if channel doesn't exist
+        if voicechat is None:
+            return await ctx.send(embed=discord.Embed(title="Voice channel doesn't exist",
+                                                      color=discord.Color.dark_red()))
+        # Get info about the current channel
+        try:
+            cur = database.cursor()
+            res = cur.execute(f"SELECT * FROM channels "
+                              f"WHERE ChannelID = {ctx.channel.id}").fetchall()
+        except sqlite3.Error as error:
+            return await ctx.send(f"Couldn't reach database! contact a tech: {error}")
+        # Check if new channel is the same as the old one. If they are return:
+        if int(res[0][2]) == voicechat.id:
+            embed = discord.Embed(title=f"Cannot comply: {voicechat.name} is already this "
+                                        f"channel's voice room!")
+            return await ctx.send(embed=embed)
+        # Else, continue
+        else:
+            try:
+                cur.execute(f"UPDATE channels "
+                            f"SET VChannelID = {voicechat.id} "
+                            f"WHERE ChannelID = {ctx.channel.id}")
+                database.commit()
+                await ctx.send(embed=discord.Embed(title=f"Voice chat of this channel is now {newvc}"))
+            except sqlite3.Error as error:
+                return await ctx.send(f"Cannot update voice channel! contact a tech: {error}")
+
 
 def setup(bot):
     bot.add_cog(TTSchannel(bot))
