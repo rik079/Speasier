@@ -16,16 +16,14 @@ class MessageHandler(commands.Cog):
     async def on_message(self, ctx):
         if ctx.author.bot == True:
             return
-        user = ctx.author
+        user = ctx.author        
         cur = database.cursor()
-        #first we check if the bot is inside a voice channel        
-        def is_connected(ctx):
-            voice_client = get(client.voice_clients, guild=ctx.guild)
-            return voice_client and voice_client.is_connected()
 
-        if is_connected(ctx) == None: # disable for testing
+        #first we check if the member is inside a voice channel 
+        if ctx.author.voice == None:
             return
-
+            
+        # check if the channel is registered
         try:
             cur.execute("SELECT * FROM channels WHERE ChannelID = ?", [ctx.channel.id])
             rows = cur.fetchall()
@@ -34,9 +32,9 @@ class MessageHandler(commands.Cog):
             return await ctx.send(f"An error coccured: `{er}`")
 
         if len(rows) != 1:
-            return await ctx.send("You need to register this voice channel") # Maybe just return here. Need to test that
-
-        # check if roles are present
+            return
+            
+        # check if roles are registered
         try:
             cur.execute("SELECT * FROM users WHERE DiscordID = ?",
                         [ctx.author.id])
@@ -45,23 +43,17 @@ class MessageHandler(commands.Cog):
         except sqlite3.Error as er:
             return await ctx.send(f"An error coccured: `{er}`")
 
-        data = rows2[0]
+        
         if len(rows2) != 1:
             role = None
         else:
-            voice = data[2]
+            data = rows2[0]
             role = discord.utils.get(user.guild.roles, id=int(data[2]))
         
         # from here we need to call the polly API and then send the response into a voice channel
-        # can't test this but it should work
+        # the role will be either a name or None
+        # not sure what you need to make polly use the standard voice
         
-        # use micro's function to clean the message
-        # for now it's just the message as is
-        message = ctx.message
-        
-        #polly.synth(role, message)
-        #voice.VCchannel.play(polly.synth(role, message), after=None)
-        # maybe it doesn't work, I dunno
 
 
     
